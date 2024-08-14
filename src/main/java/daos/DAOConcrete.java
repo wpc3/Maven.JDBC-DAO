@@ -48,15 +48,15 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
 
     @Override
     public Cars create(Cars dto) {
-        String query = "INSERT INTO car (id,make,year,color,vin,model) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO car (make,year,color,vin,model) VALUES (?,?,?,?,?)";
         try {Connection connection = getConnection();
             PreparedStatement pstm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            pstm.setInt(1,dto.getId());
-            pstm.setString(2, dto.getMake());
-            pstm.setInt(3,dto.getYear());
-            pstm.setString(4,dto.getColor());
-            pstm.setInt(5,dto.getVin());
-            pstm.setString(6,dto.getModel());
+//            pstm.setInt(1,dto.getId());// dont need to worry about id's because it's auto incremented
+            pstm.setString(1, dto.getMake());
+            pstm.setInt(2,dto.getYear());
+            pstm.setString(3,dto.getColor());
+            pstm.setInt(4,dto.getVin());
+            pstm.setString(5,dto.getModel());
             pstm.executeUpdate();
 
         } catch (SQLException e) {
@@ -67,10 +67,25 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
 
     @Override
     public Cars update(Cars dto) {
-        return null;
-    }
+        String query = "UPDATE car SET  make = ?,year = ?,color = ?,vin = ?,model = ? WHERE id = ?";
+        try {Connection connection = getConnection();
+            PreparedStatement pstm = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+//            pstm.setInt(1,dto.getId());
+            pstm.setString(1, dto.getMake());
+            pstm.setInt(2,dto.getYear());
+            pstm.setString(3,dto.getColor());
+            pstm.setInt(4,dto.getVin());
+            pstm.setString(5,dto.getModel());
+            pstm.setInt(6,dto.getId());
+            pstm.executeUpdate();
 
-    @Override
+
+        return dto;
+    } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+        @Override
     public List<Cars> findAll() {
         List<Cars> cars = new ArrayList<>();
         String query = "SELECT * FROM car)";
@@ -96,11 +111,19 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
     }
 
     @Override
-    public void deleteID() {
+    public void deleteID(int id) {
+        String query = "DELETE FROM car WHERE id =?";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setInt(1,id);
+            pstm.executeUpdate();
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         DAOInterface daoInterface = new DAOConcrete();
 
 //         Create a new car
@@ -109,7 +132,7 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
 //        System.out.println("Created Car: " + newCar);
 
 
-        Cars car = daoInterface.findById(2);
+        Cars car = daoInterface.findById(3);
         System.out.println("Found Car: " + car);
 
     }

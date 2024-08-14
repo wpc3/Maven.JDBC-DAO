@@ -12,7 +12,7 @@ public interface DAOInterface {
     Cars create(Cars dto);
     Cars update(Cars dto);
     List<Cars> findAll();
-    void deleteID();
+    void deleteID(int id);
 
 
 
