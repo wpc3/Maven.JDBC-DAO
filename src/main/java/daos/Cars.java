@@ -62,4 +62,16 @@ public void setModel(String model){
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Cars{" +
+                "id=" + id +
+                ", make='" + make + '\'' +
+                ", year=" + year +
+                ", color='" + color + '\'' +
+                ", vin=" + vin +
+                ", model='" + model + '\'' +
+                '}';
+    }
 }

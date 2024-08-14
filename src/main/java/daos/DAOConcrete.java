@@ -1,8 +1,7 @@
 package daos;
 
 import java.sql.*;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class DAOConcrete implements DAOInterface {
 //    private Connection connection;
@@ -25,7 +24,7 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
 
     @Override
     public Cars findById(int id) {
-        String query = "SELECT * FOM car WHERE id = ?";
+        String query = "SELECT * FROM car WHERE id = ?";
         try { Connection connection = getConnection();
             PreparedStatement pstm = connection.prepareStatement(query);
             pstm.setInt(1,id);
@@ -73,7 +72,27 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
 
     @Override
     public List<Cars> findAll() {
-        return Collections.emptyList();
+        List<Cars> cars = new ArrayList<>();
+        String query = "SELECT * FROM car)";
+        try {Connection connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+
+            while(rs.next())
+            {
+            cars.add(new Cars(rs.getInt("id"),rs.getString("make"),rs.getInt("year"),rs.getString("color"),rs.getInt("vin"),rs.getString("model")));
+            }
+
+
+        }
+
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return cars;
     }
 
     @Override
@@ -85,11 +104,13 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
         DAOInterface daoInterface = new DAOConcrete();
 
 //         Create a new car
-        Cars newCar = new Cars(6, "BMW", 2024, "Blue", 1029476201, "i10");
-        newCar = daoInterface.create(newCar);
-        System.out.println("Created Car: " + newCar);
-//        Cars car = daoInterface.findById(newCar.getId());
-//        System.out.println("Found Car: " + car);
+//        Cars newCar = new Cars(6, "BMW", 2024, "Blue", 1029476201, "i10");
+//        newCar = daoInterface.create(newCar);
+//        System.out.println("Created Car: " + newCar);
+
+
+        Cars car = daoInterface.findById(2);
+        System.out.println("Found Car: " + car);
 
     }
 
