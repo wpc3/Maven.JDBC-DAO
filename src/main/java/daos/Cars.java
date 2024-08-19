@@ -9,7 +9,7 @@ private String color;
 private int vin;
 private String model;
 
-public Cars(int id, String make, int year, String color, int vin, String model){
+public Cars(String make, int year, String color, int vin, String model){
     this.id = id;
     this.make = make;
     this.vin = vin;

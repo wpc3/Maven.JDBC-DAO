@@ -13,7 +13,7 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
     private static final String USER = "root";
     private static final String PASSWORD = "Mightymac18!";
 
-    // Use a connection method to avoid direct connection use
+  //made a get connection method
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
@@ -31,7 +31,7 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
             ResultSet resultset = pstm.executeQuery();
             if(resultset.next()){
                 return new Cars(
-                        resultset.getInt("id"),
+//                        resultset.getInt("id"),
                         resultset.getString("make"),
                         resultset.getInt("year"),
                         resultset.getString("color"),
@@ -88,7 +88,7 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
         @Override
     public List<Cars> findAll() {
         List<Cars> cars = new ArrayList<>();
-        String query = "SELECT * FROM car)";
+        String query = "SELECT * FROM car";
         try {Connection connection = getConnection();
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -96,9 +96,10 @@ private static final String URL = "jdbc:mysql://localhost:3306/cars";
 
             while(rs.next())
             {
-            cars.add(new Cars(rs.getInt("id"),rs.getString("make"),rs.getInt("year"),rs.getString("color"),rs.getInt("vin"),rs.getString("model")));
-            }
+            cars.add(new Cars(rs.getString("make"),rs.getInt("year"),rs.getString("color"),rs.getInt("vin"),rs.getString("model")));
 
+            }
+            System.out.println(cars);
 
         }
 
